@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { register } from "../action/authAction";
+import { login, register } from "../action/authAction";
 
 const initialState = {
   currentUser: "",
@@ -7,6 +7,11 @@ const initialState = {
 
 export const registerAPI = createAsyncThunk("auth/register", async (data) => {
   return await register(data);
+});
+
+export const loginAPI = createAsyncThunk("auth/login", async (payload) => {
+  const { email, password } = payload;
+  return await login(email, password);
 });
 
 const authSlice = createSlice({
@@ -18,6 +23,12 @@ const authSlice = createSlice({
       state.currentUser = "";
     });
     builder.addCase(registerAPI.fulfilled, (state, action) => {
+      state.currentUser = action.payload;
+    });
+    builder.addCase(loginAPI.pending, (state, action) => {
+      state.currentUser = "";
+    });
+    builder.addCase(loginAPI.fulfilled, (state, action) => {
       state.currentUser = action.payload;
     });
   },

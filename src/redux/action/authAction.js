@@ -1,4 +1,7 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { toast } from "react-toastify";
 import { auth } from "../../FireBase";
 
@@ -13,8 +16,11 @@ export const register = async (data) => {
   }
 };
 
-export const login = async (data) => {
+export const login = async (email, password) => {
   try {
+    const res = await signInWithEmailAndPassword(auth, email, password);
+    toast.success("Login Success!!!");
+    return res.user;
   } catch (error) {
     return toast.error(error.message);
   }

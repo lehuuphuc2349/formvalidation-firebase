@@ -6,6 +6,7 @@ import { validationInput } from "../utils/validateInput";
 import { useDispatch } from "react-redux";
 import { loading } from "../redux/slice/globalSlice";
 import { registerAPI } from "../redux/slice/authSlice";
+import { Link } from "react-router-dom";
 
 const RegisterForm = () => {
   const {
@@ -103,7 +104,9 @@ const RegisterForm = () => {
         >
           Submit
         </Button>
-        {console.log(errors)}
+        <span>
+          Are you have an account? <Link to="/login"> Login</Link>
+        </span>
       </Box>
     </Box>
   );
