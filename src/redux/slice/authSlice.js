@@ -20,18 +20,18 @@ const authSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(registerAPI.pending, (state, action) => {
-      state.currentUser = "";
-    });
-    builder.addCase(registerAPI.fulfilled, (state, action) => {
-      state.currentUser = action.payload;
-    });
-    builder.addCase(loginAPI.pending, (state, action) => {
-      state.currentUser = "";
-    });
-    builder.addCase(loginAPI.fulfilled, (state, action) => {
-      state.currentUser = action.payload;
-    });
+    builder.addMatcher(
+      ({ type }) => type.startsWith("auth") && type.endsWith("pending"),
+      (state, action) => {
+        state.currentUser = "";
+      }
+    );
+    builder.addMatcher(
+      ({ type }) => type.startsWith("auth") && type.endsWith("fulfilled"),
+      (state, action) => {
+        state.currentUser = action.payload;
+      }
+    );
   },
 });
 
