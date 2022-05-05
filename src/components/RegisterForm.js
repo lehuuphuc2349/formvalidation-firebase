@@ -31,7 +31,7 @@ const RegisterForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       component="form"
       width="400px"
-      border="1px solid #c4c4c4"
+      border="2px solid #c4c4c4"
       padding={5}
       borderRadius={5}
     >

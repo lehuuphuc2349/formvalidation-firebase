@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { TextField, Typography, Button } from "@mui/material";
 import { Box } from "@mui/system";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { loading } from "../redux/slice/globalSlice";
 import { loginAPI } from "../redux/slice/authSlice";
+import { loginGoogle } from "../redux/action/authAction";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const hanldeSubmit = async (e) => {
     e.preventDefault();
@@ -22,6 +24,14 @@ const Login = () => {
     };
     await dispatch(loginAPI(data));
     dispatch(loading(false));
+    navigate("/home");
+  };
+
+  const handleLoginWithGoogle = async () => {
+    dispatch(loading(true));
+    await loginGoogle();
+    dispatch(loading(false));
+    navigate("/home");
   };
 
   return (
@@ -38,7 +48,7 @@ const Login = () => {
         onSubmit={hanldeSubmit}
         component="form"
         width="400px"
-        border="1px solid #c4c4c4"
+        border="2px solid #c4c4c4"
         padding={5}
         borderRadius={5}
       >
@@ -69,10 +79,19 @@ const Login = () => {
             type="submit"
             variant="contained"
             fullWidth
-            mt={2}
-            mb={2}
+            style={{ height: "60px" }}
           >
             Submit
+          </Button>
+          <br />
+          <Button
+            color="error"
+            variant="contained"
+            fullWidth
+            style={{ height: "60px" }}
+            onClick={() => handleLoginWithGoogle()}
+          >
+            Google
           </Button>
           <span>
             Do not have an account? <Link to="/register"> Register</Link>
