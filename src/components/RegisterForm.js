@@ -105,7 +105,7 @@ const RegisterForm = () => {
           Submit
         </Button>
         <span>
-          Are you have an account? <Link to="/login"> Login</Link>
+          Are you have an account? <Link to="/"> Login</Link>
         </span>
       </Box>
     </Box>

@@ -1,9 +1,15 @@
-import React, { useState } from "react";
-import { TextField, Typography, Button } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import {
+  TextField,
+  Typography,
+  Button,
+  Checkbox,
+  FormControlLabel,
+} from "@mui/material";
 import { Box } from "@mui/system";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loading } from "../redux/slice/globalSlice";
 import { loginAPI } from "../redux/slice/authSlice";
 import { loginGoogle } from "../redux/action/authAction";
@@ -11,8 +17,15 @@ import { loginGoogle } from "../redux/action/authAction";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [remember, setRemember] = useState(false);
+  const { currentUser } = useSelector((state) => state.auth);
+
+  const history = useHistory();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (currentUser) return history.replace("/home");
+  }, [currentUser, history]);
 
   const hanldeSubmit = async (e) => {
     e.preventDefault();
@@ -21,17 +34,16 @@ const Login = () => {
     const data = {
       email: email,
       password: password,
+      remember: remember,
     };
     await dispatch(loginAPI(data));
     dispatch(loading(false));
-    navigate("/home");
   };
 
   const handleLoginWithGoogle = async () => {
     dispatch(loading(true));
     await loginGoogle();
     dispatch(loading(false));
-    navigate("/home");
   };
 
   return (
@@ -93,6 +105,25 @@ const Login = () => {
           >
             Google
           </Button>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <FormControlLabel
+              control={
+                <Checkbox
+                  value={remember}
+                  onChange={() => setRemember(!remember)}
+                  color="primary"
+                />
+              }
+              label="Remember me"
+            />
+            <Link to="/forgot_password">
+              <span>Forgot Password</span>
+            </Link>
+          </Box>
           <span>
             Do not have an account? <Link to="/register"> Register</Link>
           </span>

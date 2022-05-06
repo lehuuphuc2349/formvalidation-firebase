@@ -1,24 +1,51 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Routes, Route, useNavigate } from "react-router-dom";
-import { PageRender } from "./custom/PageRender";
-import Home from "./pages/home";
+import { BrowserRouter as Router, Route, useHistory } from "react-router-dom";
+import { onIdTokenChanged } from "firebase/auth";
+import { auth } from "./FireBase";
+import { addUser } from "./redux/slice/authSlice";
+import { PriveRouter } from "./custom/PriveRouter";
 import Login from "./pages/login";
+import PageRender from "./custom/PageRender";
 import Loading from "./components/Loading";
+import Register from "./pages/register";
+import ForgotPassword from "./pages/forgot_password";
+import Header from "./components/Header";
+import Home from "./pages/home";
 
 function App() {
+  const { currentUser } = useSelector((state) => state.auth);
   const { loading } = useSelector((state) => state.global);
-  const { currrentUser } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  // This function call when each login, register, logout and reload
+  useEffect(() => {
+    const subscribe = onIdTokenChanged(auth, async (user) => {
+      if (user) {
+        dispatch(addUser(user));
+      } else {
+        dispatch(addUser(undefined));
+        return history.push("/");
+      }
+    });
+    return subscribe;
+  }, [history, dispatch]);
 
   return (
-    <>
+    <Router>
       {loading && <Loading />}
-      <Routes>
-        <Route path="/" element={currrentUser ? <Home /> : <Login />} />
-        <Route path="/:page" element={<PageRender />} />
-        <Route path="/:page/:id" element={<PageRender />} />
-      </Routes>
-    </>
+      {currentUser && <Header />}
+      {/* Public Router */}
+      <Route exact path="/" component={currentUser ? Home : Login} />
+      <Route exact path="/register" component={Register} />
+      <Route exact path="/forgot_password" component={ForgotPassword} />
+
+      {/* Prive Router */}
+      <PriveRouter exact path="/:page" component={PageRender} />
+      <PriveRouter exact path="/:page/:id" component={PageRender} />
+    </Router>
   );
 }
 

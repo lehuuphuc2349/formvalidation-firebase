@@ -10,29 +10,34 @@ export const registerAPI = createAsyncThunk("auth/register", async (data) => {
 });
 
 export const loginAPI = createAsyncThunk("auth/login", async (payload) => {
-  const { email, password } = payload;
-  console.log(payload);
-  return await login(email, password);
+  const { email, password, remember } = payload;
+  return await login(email, password, remember);
 });
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    addUser: (state, action) => {
+      state.currentUser = action.payload;
+    },
+  },
   extraReducers: (builder) => {
-    builder.addMatcher(
-      ({ type }) => type.startsWith("auth") && type.endsWith("pending"),
-      (state, action) => {
-        state.currentUser = "";
-      }
-    );
-    builder.addMatcher(
-      ({ type }) => type.startsWith("auth") && type.endsWith("fulfilled"),
-      (state, action) => {
-        state.currentUser = action.payload;
-      }
-    );
+    builder
+      .addMatcher(
+        ({ type }) => type.startsWith("auth") && type.endsWith("pending"),
+        (state) => {
+          state.currentUser = "";
+        }
+      )
+      .addMatcher(
+        ({ type }) => type.startsWith("auth") && type.endsWith("fulfilled"),
+        (state, action) => {
+          state.currentUser = action.payload;
+        }
+      );
   },
 });
 
+export const { addUser } = authSlice.actions;
 export default authSlice.reducer;
