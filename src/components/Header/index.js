@@ -14,6 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/action/authAction";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const pages = ["Products", "Pricing", "Blog"];
 
@@ -21,6 +22,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const history = useHistory();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -51,7 +53,12 @@ const Header = () => {
             variant="h6"
             noWrap
             component="div"
-            sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+            sx={{
+              mr: 2,
+              display: { xs: "none", md: "flex" },
+              cursor: "pointer",
+            }}
+            onClick={() => history.go("/")}
           >
             LOGO
           </Typography>
@@ -108,7 +115,12 @@ const Header = () => {
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
+            sx={{
+              flexGrow: 1,
+              display: { xs: "flex", md: "none" },
+              cursor: "pointer",
+            }}
+            onClick={() => history.go("/")}
           >
             LOGO
           </Typography>

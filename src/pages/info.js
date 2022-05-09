@@ -1,7 +1,12 @@
 import React from "react";
+import Setting from "../components/Profile/Setting";
 
 const Info = () => {
-  return <div>info</div>;
+  return (
+    <>
+      <Setting />
+    </>
+  );
 };
 
 export default Info;

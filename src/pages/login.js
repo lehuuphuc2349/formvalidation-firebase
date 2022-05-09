@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loading } from "../redux/slice/globalSlice";
 import { loginAPI } from "../redux/slice/authSlice";
 import { loginGoogle } from "../redux/action/authAction";
+import { stylesType } from "../utils/styleType";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -47,20 +48,13 @@ const Login = () => {
   };
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+    <Box sx={stylesType.container}>
       <Box
         onSubmit={hanldeSubmit}
         component="form"
         width="400px"
         border="2px solid #c4c4c4"
+        backgroundColor="white"
         padding={5}
         borderRadius={5}
       >
