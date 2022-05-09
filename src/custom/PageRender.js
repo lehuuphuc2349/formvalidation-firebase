@@ -10,9 +10,11 @@ const generatorPage = (pageName) => {
   }
 };
 
-export const PageRender = () => {
+const PageRender = () => {
   const { id, page } = useParams();
   let pageName = "";
   pageName = id ? `${page}/[id]` : `${page}`;
   return generatorPage(pageName);
 };
+
+export default PageRender;
