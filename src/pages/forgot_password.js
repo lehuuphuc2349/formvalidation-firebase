@@ -14,14 +14,17 @@ const ForgotPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email.length) return toast.error("Please enter your email!!!");
+    if (!email.length) {
+      toast.error("Please enter your email!!!");
+      return;
+    }
     dispatch(loading(true));
     await forgotPassword(email);
     dispatch(loading(false));
   };
 
-  const goBack = async (e) => {
-    return history.goBack();
+  const goBack = () => {
+    history.goBack();
   };
 
   return (

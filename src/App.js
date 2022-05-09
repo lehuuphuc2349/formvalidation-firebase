@@ -31,7 +31,7 @@ function App() {
       }
     });
     return subscribe;
-  }, [history, dispatch]);
+  }, []);
 
   return (
     <Router>
@@ -42,7 +42,7 @@ function App() {
       <Route exact path="/register" component={Register} />
       <Route exact path="/forgot_password" component={ForgotPassword} />
 
-      {/* Prive Router */}
+      {/* Private Router */}
       <PriveRouter exact path="/:page" component={PageRender} />
       <PriveRouter exact path="/:page/:id" component={PageRender} />
     </Router>

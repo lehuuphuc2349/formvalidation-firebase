@@ -18,7 +18,7 @@ export const register = async (data) => {
     toast.success("Register success!!!");
     return res.user;
   } catch (error) {
-    return toast.error(error.message);
+    toast.error(error.message);
   }
 };
 
@@ -32,7 +32,7 @@ export const login = async (email, password, remember) => {
     toast.success("Login Success!!!");
     return res.user;
   } catch (error) {
-    return toast.error(error.message);
+    toast.error(error.message);
   }
 };
 
@@ -42,16 +42,16 @@ export const loginGoogle = async () => {
     toast.success("Login with google success");
     return res.user;
   } catch (error) {
-    return toast.error(error.message);
+    toast.error(error.message);
   }
 };
 
 export const forgotPassword = async (email) => {
   try {
     await sendPasswordResetEmail(auth, email);
-    return toast.success("Success, please check your inbox email");
+    toast.success("Success, please check your inbox email");
   } catch (error) {
-    return toast.error(error.message);
+    toast.error(error.message);
   }
 };
 
@@ -59,6 +59,6 @@ export const logout = async () => {
   try {
     await signOut(auth);
   } catch (error) {
-    return toast.error(error.message);
+    toast.error(error.message);
   }
 };

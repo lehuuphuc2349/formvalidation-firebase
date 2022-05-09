@@ -24,17 +24,17 @@ const Login = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (currentUser) return history.replace("/home");
-  }, [currentUser, history]);
+    if (currentUser) history.replace("/home");
+  }, [currentUser]);
 
   const hanldeSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) return toast.error("Please fill in your detail");
     dispatch(loading(true));
     const data = {
-      email: email,
-      password: password,
-      remember: remember,
+      email,
+      password,
+      remember,
     };
     await dispatch(loginAPI(data));
     dispatch(loading(false));
