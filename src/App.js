@@ -12,6 +12,7 @@ import Register from "./pages/register";
 import ForgotPassword from "./pages/forgot_password";
 import Header from "./components/Header";
 import Home from "./pages/home";
+import { fetchProfile } from "./redux/slice/profileSlice";
 
 function App() {
   const { currentUser } = useSelector((state) => state.auth);
@@ -32,6 +33,12 @@ function App() {
     });
     return subscribe;
   }, []);
+
+  // Fetch Profile User
+  useEffect(() => {
+    if (!currentUser) return;
+    dispatch(fetchProfile(currentUser.uid));
+  }, [currentUser]);
 
   return (
     <Router>

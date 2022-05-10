@@ -3,7 +3,6 @@ import { login, register } from "../action/authAction";
 
 const initialState = {
   currentUser: "",
-  waiting: false,
 };
 
 export const registerAPI = createAsyncThunk("auth/register", async (data) => {
@@ -26,10 +25,6 @@ const authSlice = createSlice({
     addUser: (state, action) => {
       state.currentUser = action.payload;
     },
-    removeUser: (state, action) => {
-      state.currentUser = { ...state, ...(state.currentUser = action.payload) };
-      state.waiting = false;
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -37,14 +32,12 @@ const authSlice = createSlice({
         ({ type }) => type.startsWith("auth") && type.endsWith("pending"),
         (state) => {
           state.currentUser = "";
-          state.waiting = true;
         }
       )
       .addMatcher(
         ({ type }) => type.startsWith("auth") && type.endsWith("fulfilled"),
         (state, action) => {
           state.currentUser = action.payload;
-          state.waiting = false;
         }
       );
   },

@@ -11,16 +11,19 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/action/authAction";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const pages = ["Products", "Pricing", "Blog"];
 
 const Header = () => {
   const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.auth);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const history = useHistory();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -51,7 +54,12 @@ const Header = () => {
             variant="h6"
             noWrap
             component="div"
-            sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+            sx={{
+              mr: 2,
+              display: { xs: "none", md: "flex" },
+              cursor: "pointer",
+            }}
+            onClick={() => history.go("/")}
           >
             LOGO
           </Typography>
@@ -108,7 +116,12 @@ const Header = () => {
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
+            sx={{
+              flexGrow: 1,
+              display: { xs: "flex", md: "none" },
+              cursor: "pointer",
+            }}
+            onClick={() => history.go("/")}
           >
             LOGO
           </Typography>
@@ -127,7 +140,10 @@ const Header = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar style={{ cursor: "pointer" }} />
+                <Avatar
+                  style={{ cursor: "pointer" }}
+                  src={currentUser?.photoURL}
+                />
               </IconButton>
             </Tooltip>
             <Menu
