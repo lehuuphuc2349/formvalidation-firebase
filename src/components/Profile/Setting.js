@@ -1,16 +1,19 @@
 import React, { useState } from "react";
-import { TextField, Typography, Button, Avatar } from "@mui/material";
+import AvatarUser from "./AvatarUser";
+import { TextField, Typography, Button } from "@mui/material";
 import { Box } from "@mui/system";
 import { useDispatch, useSelector } from "react-redux";
 import { loading } from "../../redux/slice/globalSlice";
 import { updateProfile } from "../../redux/slice/profileSlice";
 import { stylesType } from "../../utils/styleType";
 import { useHistory } from "react-router-dom";
+import { changeAvatar } from "../../redux/action/profileAction";
+import { uploadImage } from "../../redux/action/uploadAction";
 
 const Setting = () => {
   const { profile } = useSelector((state) => state.profile);
   const { currentUser } = useSelector((state) => state.auth);
-
+  const [avatar, setAvatar] = useState(currentUser?.photoURL);
   const [data, setData] = useState(profile);
 
   const dispatch = useDispatch();
@@ -21,6 +24,12 @@ const Setting = () => {
     setData({ ...data, [name]: value });
   };
 
+  const handleChangeAvatar = async () => {
+    if (!currentUser || !avatar) return;
+    const res = await uploadImage(`images/${currentUser.uid}`, avatar);
+    await changeAvatar(currentUser, res[0]);
+  };
+
   const handleSubmitUpdate = async (e) => {
     e.preventDefault();
     if (!currentUser) return;
@@ -29,6 +38,7 @@ const Setting = () => {
       user: currentUser,
       data,
     };
+    await handleChangeAvatar();
     await dispatch(updateProfile(payload));
     dispatch(loading(false));
   };
@@ -48,6 +58,7 @@ const Setting = () => {
           <Typography variant="h4" textAlign="center" mb={2} fontWeight="bold">
             Setting Profile
           </Typography>
+          <AvatarUser avatar={avatar} setAvatar={setAvatar} />
           <TextField
             name="fullname"
             label="Full Name"

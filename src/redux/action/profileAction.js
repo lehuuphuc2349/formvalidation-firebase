@@ -1,6 +1,8 @@
+import { updateCurrentUser, updateProfile } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore/lite";
 import { toast } from "react-toastify";
 import { database } from "../../FireBase";
+import { auth } from "../../FireBase";
 
 export const changeProfile = async (user, data) => {
   try {
@@ -19,6 +21,15 @@ export const getProfile = async (uid) => {
     if (docSnap.exists()) {
       return docSnap.data();
     }
+  } catch (error) {
+    toast.error(error.message);
+  }
+};
+
+export const changeAvatar = async (user, url) => {
+  try {
+    await updateProfile(user, { photoURL: url });
+    await updateCurrentUser(auth, user);
   } catch (error) {
     toast.error(error.message);
   }
