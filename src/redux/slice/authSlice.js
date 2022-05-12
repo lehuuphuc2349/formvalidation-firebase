@@ -27,19 +27,12 @@ const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addMatcher(
-        ({ type }) => type.startsWith("auth") && type.endsWith("pending"),
-        (state) => {
-          state.currentUser = "";
-        }
-      )
-      .addMatcher(
-        ({ type }) => type.startsWith("auth") && type.endsWith("fulfilled"),
-        (state, action) => {
-          state.currentUser = action.payload;
-        }
-      );
+    builder.addMatcher(
+      ({ type }) => type.startsWith("auth") && type.endsWith("fulfilled"),
+      (state, action) => {
+        state.currentUser = action.payload;
+      }
+    );
   },
 });
 

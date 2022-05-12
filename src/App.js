@@ -13,6 +13,7 @@ import ForgotPassword from "./pages/forgot_password";
 import Header from "./components/Header";
 import Home from "./pages/home";
 import { fetchProfile } from "./redux/slice/profileSlice";
+import { collectionFetchData } from "./redux/slice/postSlice";
 
 function App() {
   const { currentUser } = useSelector((state) => state.auth);
@@ -32,12 +33,18 @@ function App() {
       }
     });
     return subscribe;
-  }, []);
+  }, [dispatch, history]);
 
   // Fetch Profile User
   useEffect(() => {
-    if (!currentUser) return;
+    if (!currentUser?.uid) return;
     dispatch(fetchProfile(currentUser.uid));
+  }, [currentUser]);
+
+  //Fetch Post User
+  useEffect(() => {
+    if (!currentUser?.uid) return;
+    dispatch(collectionFetchData(currentUser.uid));
   }, [currentUser]);
 
   return (

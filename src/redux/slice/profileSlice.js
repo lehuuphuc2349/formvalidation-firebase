@@ -22,19 +22,12 @@ const profileSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder
-      .addMatcher(
-        ({ type }) => type.startsWith("profile") && type.endsWith("pending"),
-        (state) => {
-          state.profile = "";
-        }
-      )
-      .addMatcher(
-        ({ type }) => type.startsWith("profile") && type.endsWith("fulfilled"),
-        (state, action) => {
-          state.profile = action.payload;
-        }
-      );
+    builder.addMatcher(
+      ({ type }) => type.startsWith("profile") && type.endsWith("fulfilled"),
+      (state, action) => {
+        state.profile = action.payload;
+      }
+    );
   },
 });
 
