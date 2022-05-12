@@ -53,12 +53,8 @@ function App() {
       {currentUser && <Header />}
       {/* Public Router */}
       <Route exact path="/" component={currentUser ? Home : Login} />
-      <Route exact path="/register" component={Register} />
-      <Route exact path="/forgot_password" component={ForgotPassword} />
-
-      {/* Private Router */}
-      <PriveRouter exact path="/:page" component={PageRender} />
-      <PriveRouter exact path="/:page/:id" component={PageRender} />
+      <Route exact path="/:page" component={PageRender} />
+      <Route exact path="/:page/:id" component={PageRender} />
     </Router>
   );
 }
