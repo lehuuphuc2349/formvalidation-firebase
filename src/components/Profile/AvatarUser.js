@@ -1,5 +1,4 @@
 import React from "react";
-import { toast } from "react-toastify";
 import { Box, Avatar } from "@mui/material";
 import { stylesType } from "../../utils/styleType";
 import { checkImages } from "../../utils/checkImage";

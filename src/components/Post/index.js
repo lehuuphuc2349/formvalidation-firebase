@@ -15,7 +15,6 @@ import { useSelector } from "react-redux";
 import MoreVerItem from "@mui/icons-material/MoreVert";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import moment from "moment";
-import { DeleteForever, DeleteOutlineOutlined } from "@mui/icons-material";
 
 const PostCard = ({ collection }) => {
   const { currentUser } = useSelector((state) => state.auth);
