@@ -1,16 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, Typography, Button } from "@mui/material";
 import { Box } from "@mui/system";
 import { toast } from "react-toastify";
 import { loading } from "../redux/slice/globalSlice";
 import { forgotPassword } from "../redux/action/authAction";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
+  const { currentUser } = useSelector((state) => state.auth);
   const history = useHistory();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (currentUser) history.replace("/");
+  }, [currentUser]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
