@@ -3,6 +3,7 @@ import { getCollections } from "../action/postActions";
 
 const initialState = {
   collections: [],
+  dataUpdate: {},
 };
 
 export const collectionFetchData = createAsyncThunk(
@@ -20,6 +21,21 @@ const postSlice = createSlice({
     create: (state, action) => {
       state.collections.unshift(action.payload);
     },
+    setUpdateData: (state, action) => {
+      state.dataUpdate = action.payload;
+    },
+    update: (state, action) => {
+      const newData = state.collections.map((item) =>
+        item.id === action.payload.id ? action.payload : item
+      );
+      state.collections = newData;
+    },
+    remove: (state, action) => {
+      const newData = state.collections.filter(
+        (item) => item.id !== action.payload.id
+      );
+      state.collections = newData;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(collectionFetchData.fulfilled, (state, action) => {
@@ -29,4 +45,4 @@ const postSlice = createSlice({
 });
 
 export default postSlice.reducer;
-export const { create } = postSlice.actions;
+export const { create, setUpdateData, update, remove } = postSlice.actions;

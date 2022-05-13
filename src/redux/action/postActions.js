@@ -1,9 +1,12 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
   getDocs,
   limit,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore/lite";
 import { toast } from "react-toastify";
@@ -41,6 +44,23 @@ export const getCollections = async (uid) => {
       data.push({ ...doc.data(), id: doc.id });
     });
     return data;
+  } catch (error) {
+    toast.error(error.message);
+  }
+};
+
+export const updateCollection = async (newData) => {
+  try {
+    await updateDoc(doc(database, `posts/${newData.id}`), newData);
+    toast.success("Update Collections Success!!!");
+  } catch (error) {
+    toast.error(error.message);
+  }
+};
+
+export const deleteCollection = async (newData) => {
+  try {
+    await deleteDoc(doc(database, `posts/${newData.id}`));
   } catch (error) {
     toast.error(error.message);
   }

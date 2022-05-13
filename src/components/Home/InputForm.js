@@ -1,19 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box } from "@mui/system";
 import { Button, Input, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { uploadImage } from "../../redux/action/uploadAction";
-import { createCollections } from "../../redux/action/postActions";
+import {
+  createCollections,
+  updateCollection,
+} from "../../redux/action/postActions";
 import { loading } from "../../redux/slice/globalSlice";
-import { create } from "../../redux/slice/postSlice";
+import { create, setUpdateData, update } from "../../redux/slice/postSlice";
 import { checkImages } from "../../utils/checkImage";
 
 const InputForm = () => {
   const [title, setTitle] = useState("");
   const [file, setFile] = useState("");
 
+  const { dataUpdate } = useSelector((state) => state.posts);
   const { currentUser } = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
@@ -24,10 +29,18 @@ const InputForm = () => {
 
     dispatch(loading(true));
     const url = await uploadImage(`images/${currentUser.uid}`, file);
-    const res = await createCollections(currentUser.uid, title, url);
-    dispatch(create(res));
-    dispatch(loading(false));
 
+    if (dataUpdate) {
+      const newData = { ...dataUpdate, title, photo: url };
+      dispatch(update(newData));
+      await updateCollection(newData);
+    } else {
+      const res = await createCollections(currentUser.uid, title, url);
+      dispatch(create(res));
+    }
+
+    dispatch(loading(false));
+    dispatch(setUpdateData(undefined));
     setFile("");
     setTitle("");
   };
@@ -40,6 +53,11 @@ const InputForm = () => {
     if (!checkImages(files[0])) return;
     setFile(files[0]);
   };
+
+  useEffect(() => {
+    if (!dataUpdate) return;
+    if (dataUpdate.title) setTitle(dataUpdate.title);
+  }, [dataUpdate]);
 
   return (
     <Box

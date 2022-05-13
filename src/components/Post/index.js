@@ -11,14 +11,17 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import MoreVerItem from "@mui/icons-material/MoreVert";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import moment from "moment";
+import { remove, setUpdateData } from "../../redux/slice/postSlice";
+import { deleteCollection } from "../../redux/action/postActions";
 
 const PostCard = ({ collection }) => {
   const { currentUser } = useSelector((state) => state.auth);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const dispatch = useDispatch();
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -28,12 +31,15 @@ const PostCard = ({ collection }) => {
     setAnchorElUser(null);
   };
 
-  const handleDeletePost = () => {
-    handleCloseUserMenu();
+  const handleDeletePost = async () => {
+    window.confirm("Are you sure want to delete this post ?");
+    dispatch(remove(collection));
+    await deleteCollection(collection);
   };
 
   const handleUpdatePost = () => {
-    handleCloseUserMenu();
+    dispatch(setUpdateData(collection));
+    window.scroll({ behavior: "smooth", top: 0 });
   };
 
   const handleLikePost = () => {};
