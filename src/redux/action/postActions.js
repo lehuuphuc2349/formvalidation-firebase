@@ -3,8 +3,10 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   limit,
+  orderBy,
   query,
   updateDoc,
   where,
@@ -35,6 +37,7 @@ export const getCollections = async (uid) => {
     const qry = query(
       collection(database, "posts"),
       where("uid", "==", uid),
+      orderBy("createdAt", "desc"),
       limit(num)
     );
 
@@ -46,6 +49,18 @@ export const getCollections = async (uid) => {
     return data;
   } catch (error) {
     toast.error(error.message);
+  }
+};
+
+export const getCollection = async (uid) => {
+  try {
+    const docRef = doc(database, `posts/${uid}`);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return docSnap.data();
+    }
+  } catch (error) {
+    return toast.error(error.message);
   }
 };
 
