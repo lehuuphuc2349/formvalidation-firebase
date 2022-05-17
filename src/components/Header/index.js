@@ -59,7 +59,7 @@ const Header = () => {
               display: { xs: "none", md: "flex" },
               cursor: "pointer",
             }}
-            onClick={() => history.replace("/")}
+            onClick={() => history.goBack()}
           >
             LOGO
           </Typography>
@@ -121,7 +121,7 @@ const Header = () => {
               display: { xs: "flex", md: "none" },
               cursor: "pointer",
             }}
-            onClick={() => history.replace("/")}
+            onClick={() => history.goBack()}
           >
             LOGO
           </Typography>

@@ -127,7 +127,7 @@ const Setting = () => {
             variant="contained"
             fullWidth
             style={{ height: "60px" }}
-            onClick={() => history.goBack()}
+            onClick={() => history.replace("/")}
           >
             Go Back Home
           </Button>

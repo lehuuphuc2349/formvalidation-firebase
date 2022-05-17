@@ -40,7 +40,6 @@ const InputForm = () => {
     }
 
     dispatch(loading(false));
-    dispatch(setUpdateData(undefined));
     setFile("");
     setTitle("");
   };
@@ -57,7 +56,16 @@ const InputForm = () => {
   useEffect(() => {
     if (!dataUpdate) return;
     if (dataUpdate.title) setTitle(dataUpdate.title);
-  }, [dataUpdate]);
+    return () => {
+      dispatch(setUpdateData(undefined));
+    };
+  }, [dataUpdate, dispatch]);
+
+  const handleCancelEdit = () => {
+    dispatch(setUpdateData(undefined));
+    setFile("");
+    setTitle("");
+  };
 
   return (
     <Box
@@ -69,7 +77,7 @@ const InputForm = () => {
       borderRadius={5}
     >
       <Typography variant="h5" textAlign="center" fontWeight="bold">
-        CREATE POST
+        {dataUpdate ? "EDIT POST" : "CREATE POST"}
       </Typography>
       <Input
         type="text"
@@ -79,9 +87,24 @@ const InputForm = () => {
         onChange={(e) => setTitle(e.target.value)}
       />
       <Input type="file" color="primary" onChange={handleChangeFile} />
-      <Button fullWidth type="submit" variant="contained">
+      <Button
+        fullWidth
+        type="submit"
+        variant="contained"
+        style={{ margin: "1rem 0" }}
+      >
         Submit
       </Button>
+      {dataUpdate && (
+        <Button
+          fullWidth
+          variant="contained"
+          color="error"
+          onClick={() => handleCancelEdit()}
+        >
+          Cancel
+        </Button>
+      )}
     </Box>
   );
 };

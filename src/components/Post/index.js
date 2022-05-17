@@ -17,8 +17,11 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import moment from "moment";
 import { remove, setUpdateData } from "../../redux/slice/postSlice";
 import { deleteCollection } from "../../redux/action/postActions";
+import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const PostCard = ({ collection }) => {
+  const { id } = useParams();
   const { currentUser } = useSelector((state) => state.auth);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const dispatch = useDispatch();
@@ -32,9 +35,12 @@ const PostCard = ({ collection }) => {
   };
 
   const handleDeletePost = async () => {
-    window.confirm("Are you sure want to delete this post ?");
-    dispatch(remove(collection));
-    await deleteCollection(collection);
+    if (window.confirm("Are you sure want to delete this post ?")) {
+      dispatch(remove(collection));
+      await deleteCollection(collection);
+      return;
+    }
+    setAnchorElUser(null);
   };
 
   const handleUpdatePost = () => {
@@ -82,16 +88,33 @@ const PostCard = ({ collection }) => {
       </Menu>
 
       <CardContent>
-        <Typography mb={2} textTransform="capitalize">
-          {collection?.title}
-        </Typography>
-        <CardMedia
-          component="img"
-          height={400}
-          width="100%"
-          image={collection.photo[0]}
-          title="title"
-        />
+        {id ? (
+          <>
+            <Typography mb={2} textTransform="capitalize">
+              {collection?.title}
+            </Typography>
+            <CardMedia
+              component="img"
+              height={600}
+              width="100%"
+              image={collection?.photo?.[0] ? collection?.photo?.[0] : ""}
+              title="title"
+            />
+          </>
+        ) : (
+          <Link to={`post/${collection.id}`}>
+            <Typography mb={2} textTransform="capitalize">
+              {collection?.title}
+            </Typography>
+            <CardMedia
+              component="img"
+              height={600}
+              width="100%"
+              image={collection?.photo?.[0] ? collection?.photo?.[0] : ""}
+              title="title"
+            />
+          </Link>
+        )}
       </CardContent>
       <CardActions>
         <IconButton onClick={handleLikePost}>

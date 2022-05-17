@@ -7,6 +7,14 @@ export const stylesType = {
     alignItems: "center",
     backgroundColor: "#0008",
   },
+  containerDetail: {
+    width: "100%",
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: "2rem",
+  },
   absoluteItem: {
     opacity: 0,
     zIndex: 2,
