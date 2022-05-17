@@ -3,7 +3,7 @@ import { getCollections } from "../action/postActions";
 
 const initialState = {
   collections: [],
-  dataUpdate: undefined,
+  dataUpdate: null,
 };
 
 export const collectionFetchData = createAsyncThunk(

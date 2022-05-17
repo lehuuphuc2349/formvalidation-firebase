@@ -17,7 +17,6 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import moment from "moment";
 import { remove, setUpdateData } from "../../redux/slice/postSlice";
 import { deleteCollection } from "../../redux/action/postActions";
-import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
@@ -38,7 +37,6 @@ const PostCard = ({ collection }) => {
   const handleDeletePost = async () => {
     if (window.confirm("Are you sure want to delete this post ?")) {
       dispatch(remove(collection));
-      toast.success("Delete Post Success!!!");
       await deleteCollection(collection);
       return;
     }

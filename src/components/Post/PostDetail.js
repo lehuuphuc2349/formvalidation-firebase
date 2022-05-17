@@ -14,17 +14,15 @@ const PostDetailContent = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    let here = true;
     if (!id) return;
     const collectionItem = collections.find((item) => item.id === id);
     if (collectionItem) {
       setCollection(collectionItem);
     } else {
-      if (here) getCollection(id).then((res) => setCollection(res));
+      getCollection(id).then((res) => setCollection(res));
     }
     return () => {
       dispatch(setUpdateData(undefined));
-      here = false;
     };
   }, [id, collections, dispatch]);
 
