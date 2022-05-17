@@ -1,8 +1,8 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   loading: false,
-  alert: "",
+  alert: {},
 };
 
 const globalSlice = createSlice({
@@ -12,12 +12,12 @@ const globalSlice = createSlice({
     loading: (state, action) => {
       state.loading = action.payload;
     },
-    alert: (state, action) => {
+    alertMessage: (state, action) => {
       state.alert = action.payload;
     },
   },
   extraReducers: (builder) => {},
 });
 
-export const { loading, alert } = globalSlice.actions;
+export const { loading, alertMessage } = globalSlice.actions;
 export default globalSlice.reducer;

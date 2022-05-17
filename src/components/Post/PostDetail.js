@@ -5,7 +5,7 @@ import { stylesType } from "../../utils/styleType";
 import { setUpdateData } from "../../redux/slice/postSlice";
 import { getCollection } from "../../redux/action/postActions";
 import { useParams } from "react-router-dom";
-import PostCard from ".";
+import PostCard from "./index";
 
 const PostDetailContent = () => {
   const { id } = useParams();
