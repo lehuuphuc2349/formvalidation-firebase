@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Box } from "@mui/system";
-import { Button, Input, Typography } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
 import { uploadImage } from "../../redux/action/uploadAction";
 import {
   createCollections,
   updateCollection,
 } from "../../redux/action/postActions";
-import { loading } from "../../redux/slice/globalSlice";
+import { alertMessage, loading } from "../../redux/slice/globalSlice";
 import { create, setUpdateData, update } from "../../redux/slice/postSlice";
-import { checkImages } from "../../utils/checkImage";
+import { validatePost } from "../../utils/validatePost";
 
 const InputForm = () => {
   const [title, setTitle] = useState("");
@@ -18,14 +17,18 @@ const InputForm = () => {
 
   const { dataUpdate } = useSelector((state) => state.posts);
   const { currentUser } = useSelector((state) => state.auth);
+  const { alert } = useSelector((state) => state.global);
 
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!currentUser) return;
-    if (!title.trim()) return toast.error("Please enter your title");
-    if (!file) return toast.error("Please add your photo");
+    const check = validatePost(title, file);
+    if (check.errLength > 0) {
+      dispatch(alertMessage(check.errMsg));
+      return;
+    }
 
     dispatch(loading(true));
     const url = await uploadImage(`images/${currentUser.uid}`, file);
@@ -40,17 +43,9 @@ const InputForm = () => {
     }
 
     dispatch(loading(false));
+    dispatch(alertMessage({}));
     setFile("");
     setTitle("");
-  };
-
-  const handleChangeFile = (e) => {
-    e.preventDefault();
-    const target = e.target;
-    const files = target.files;
-    if (!files) return;
-    if (!checkImages(files[0])) return;
-    setFile(files[0]);
   };
 
   useEffect(() => {
@@ -79,14 +74,25 @@ const InputForm = () => {
       <Typography variant="h5" textAlign="center" fontWeight="bold">
         {dataUpdate ? "EDIT POST" : "CREATE POST"}
       </Typography>
-      <Input
+      <TextField
         type="text"
         fullWidth
         placeholder="Title post"
         value={title}
+        error={!!alert.title}
+        helperText={alert.title ? alert.title : ""}
         onChange={(e) => setTitle(e.target.value)}
+        style={{ marginBottom: "8px" }}
       />
-      <Input type="file" color="primary" onChange={handleChangeFile} />
+
+      <TextField
+        type="file"
+        error={!!alert.file}
+        helperText={alert.file ? alert.file : ""}
+        color="primary"
+        onChange={(e) => setFile(e.target.files[0])}
+      />
+
       <Button
         fullWidth
         type="submit"
